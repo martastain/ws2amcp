@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CCGCG</title>
+    <style>
+        html, body {
+            box-sizing: border-box;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        #debug-window {
+            font-family: monospace;
+            z-index: 1000;
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, .9);
+            font-size: 28px;
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <ul id="debug-window"></ul>
+    <script src="wscaspar.js"></script>
+    <script>
+
+    var ws_url = "ws://192.168.5.5:9001";
+    var started = false;
+    var clip = "EMPTY"; // default value - show nothing
+
+    function do_amcp(){
+        amcp("PLAY 1-1 " + clip + " MIX 25");
+    }
+
+    play = function(){
+        log(">> PLAY")
+        do_amcp();
+        started = true;
+    }
+
+    update = function(data){
+        var params = parse_params(data);
+        log(">> UPDATE " + JSON.stringify(data) );
+        if ("clip" in params){
+            clip = params["clip"];
+            if (started){  // If CG is already playing, switch clip
+                do_amcp();    
+            }
+        }
+    }
+
+    stop = function(data){
+        log(">> STOP");
+        amcp("PLAY 1-1 EMPTY MIX 25");
+    }
+    </script>
+</body>
+</html>
