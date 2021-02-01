@@ -1,0 +1,1 @@
+python -m nuitka --mingw64 --standalone --windows-icon=websocket.ico ws2amcp.py

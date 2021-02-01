@@ -1,2 +1,4 @@
 __pycache__/
+ws2amcp.build/
+ws2amcp.dist/
 settings.json
